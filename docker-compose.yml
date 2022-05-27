@@ -16,36 +16,79 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - ./conf/zoo.cfg.1:/conf/zoo.cfg
+      - ./data/zookeeper/data:/data
+      - ./data/zookeeper/datalog:/datalog
 
-  kafka:
+  kafka1:
     image: "confluentinc/cp-kafka:7.0.1"
+    container_name: "kafka1"
+    hostname: kafka1
     networks:
       - zookeeper-kafka
-    container_name: "kafka"
     ports:
       - "9092:9092"
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
+      KAFKA_CLUSTER_ID: kafka-cluster
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_HOST_NAME: localhost
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+    volumes:
+      - ./data/kafka1/data:/var/lib/kafka/data
+
+  kafka2:
+    image: "confluentinc/cp-kafka:7.0.1"
+    container_name: "kafka2"
+    hostname: kafka2
+    networks:
+      - zookeeper-kafka
+    ports:
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_CLUSTER_ID: kafka-cluster
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_HOST_NAME: localhost
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka2:29093,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+    volumes:
+      - ./data/kafka2/data:/var/lib/kafka/data
 
   kafka-ui:
     image: "provectuslabs/kafka-ui:latest"
+    container_name: "kafka-ui"
     networks:
       - zookeeper-kafka
-    container_name: "kafka-ui"
-    restart: always
+    ports:
+      - "8081:8080"
     depends_on:
       - zookeeper
-      - kafka
-    ports:
-      - "8080:8080"
+      - kafka1
+      - kafka2
     environment:
       KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:29092"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka1:29092"
+
+  kafdrop:
+    image: "obsidiandynamics/kafdrop"
+    container_name: "kafdrop"
+    networks:
+      - zookeeper-kafka
+    ports:
+      - "8082:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka1:29092"
+      JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    depends_on:
+      - zookeeper
+      - kafka1
+      - kafka2

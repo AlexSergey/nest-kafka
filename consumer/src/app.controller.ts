@@ -1,5 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload, Ctx, KafkaContext } from '@nestjs/microservices';
+import { Message } from 'kafkajs';
+import { EventPattern, MessagePattern, Payload, Ctx, KafkaContext } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 type Value = {
@@ -11,10 +12,10 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern('say.hello')
-  getHello(@Payload() message: any, @Ctx() context: KafkaContext): string {
-    const originalMessage = context.getMessage();
-    const val: Value = originalMessage.value as unknown as Value;
-    console.log(val.data);
-    return this.appService.getHello();
+  getHello(@Payload() message: Message, @Ctx() context: KafkaContext): string {
+    console.log(message);
+    if (typeof message.value === 'string') {
+      return this.appService.getHello(message.value);
+    }
   }
 }

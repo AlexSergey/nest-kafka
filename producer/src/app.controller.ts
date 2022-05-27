@@ -6,14 +6,16 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { KAFKA_SERVICES } from './config/kafka.config';
+import { lastValueFrom } from 'rxjs';
 
 @Controller()
 export class AppController implements OnModuleInit, OnModuleDestroy {
-  constructor(@Inject('HERO_SERVICE') private readonly kafka: ClientKafka) {
+  constructor(@Inject(KAFKA_SERVICES.HELLO) private readonly kafka: ClientKafka) {
   }
 
   async onModuleInit() {
-    ['hello', 'error', 'skip'].forEach((key) =>
+    ['hello', 'error', 'skip', 'reply'].forEach((key) =>
       this.kafka.subscribeToResponseOf(`say.${key}`),
     );
   }
@@ -23,7 +25,11 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
   }
 
   @Get()
-  sayHello() {
-    return this.kafka.send('say.hello', { data: 'Additional data' });
+  async sayHello() {
+    const result = await lastValueFrom(
+      this.kafka.send('say.hello', { value: 'Additional data 5' }),
+    );
+    console.log('producer fire', result);
+    return result;
   }
 }
