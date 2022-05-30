@@ -42,6 +42,16 @@ After opening it in the Browser producer will fire event to consumer
 
 Console usage snippets:
 
+- Check ZooKeeper is running:
+
+```shell
+telnet localhost 2181
+```
+After you see "Connected to localhost.", put this code:
+```shell
+srvr
+```
+
 - Consumer
 
 ```shell
@@ -67,3 +77,8 @@ kafka-console-producer \
 --property parse.key=true \
 --property key.separator=":"
 ```
+
+### Tools
+
+- [kafka-ui](http://localhost:8081)
+- [kafdrop](http://localhost:8082)

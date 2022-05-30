@@ -11,7 +11,6 @@ import { KAFKA_SERVICES, CLIENT_ID, BROKER_URL } from './config/kafka.config';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: CLIENT_ID,
             brokers: [BROKER_URL],
           },
           consumer: {

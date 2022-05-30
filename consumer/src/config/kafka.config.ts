@@ -7,4 +7,5 @@ export const KAFKA_SERVICES = {
  */
 export const CLIENT_ID = 'APP';
 
-export const BROKER_URL = 'localhost:9092'
+export const BROKER_URL = 'localhost:9092';
+export const BROKER_URL_2 = 'localhost:9093';

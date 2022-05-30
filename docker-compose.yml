@@ -13,13 +13,14 @@ services:
     hostname: zookeeper
     networks:
       - zookeeper-kafka
+    ports:
+      - "2181:2181"
+    tmpfs: "/datalog"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     volumes:
-      - ./conf/zoo.cfg.1:/conf/zoo.cfg
-      - ./data/zookeeper/data:/data
-      - ./data/zookeeper/datalog:/datalog
+      - ./conf/zookeeper/zoo.cfg.1:/conf/zoo.cfg
 
   kafka1:
     image: "confluentinc/cp-kafka:7.0.1"
@@ -39,8 +40,9 @@ services:
       KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
-    volumes:
-      - ./data/kafka1/data:/var/lib/kafka/data
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    # volumes:
+      # - ./data/kafka1/data:/var/lib/kafka/data
 
   kafka2:
     image: "confluentinc/cp-kafka:7.0.1"
@@ -60,8 +62,8 @@ services:
       KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka2:29093,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
-    volumes:
-      - ./data/kafka2/data:/var/lib/kafka/data
+    # volumes:
+      # - ./data/kafka2/data:/var/lib/kafka/data
 
   kafka-ui:
     image: "provectuslabs/kafka-ui:latest"
