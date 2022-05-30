@@ -34,16 +34,13 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
 
   @Get('/picture')
   async sendPicture() {
-    console.log('sss');
     const picture =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO 9TXL0Y4OHwAAAABJRU5ErkJggg==';
     const buffer = Buffer.from(
       picture.replace(/^data:image\/png;base64,/, ''),
       'base64',
     );
-    this.kafka.emit('picture', { value: buffer, headers: {
-        'Content-Type': 'image/png'
-      } });
+    this.kafka.emit('picture', { value: buffer });
     return 'ok';
   }
 }
