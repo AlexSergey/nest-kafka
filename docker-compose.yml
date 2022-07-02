@@ -1,8 +1,5 @@
 version: "3"
 networks:
-  default:
-    external:
-      name: zookeeper-kafka
   zookeeper-kafka:
     driver: bridge
 
@@ -64,6 +61,23 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
     # volumes:
       # - ./data/kafka2/data:/var/lib/kafka/data
+
+  schemaregistry:
+    image: confluentinc/cp-schema-registry:6.2.4
+    container_name: "schemaregistry"
+    hostname: schemaregistry
+    networks:
+      - zookeeper-kafka
+    ports:
+      - "8085:8085"
+    depends_on:
+      - zookeeper
+      - kafka1
+      - kafka2
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "kafka1:29092"
+      SCHEMA_REGISTRY_HOST_NAME: schemaregistry
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8085"
 
   kafka-ui:
     image: "provectuslabs/kafka-ui:latest"

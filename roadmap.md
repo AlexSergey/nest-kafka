@@ -1,0 +1,4 @@
+- Error handling
+- Kafkajs original client(?)
+- Transactions
+- Retry

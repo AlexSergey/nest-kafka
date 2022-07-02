@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1>Fake User Generator</h1>
+  <button id="generate">Generate</button>
+
+  <script>
+    const btn = document.getElementById('generate');
+
+    btn.addEventListener('click', () => {
+      fetch('/api/generate').then(res => res.json()).then(data => {
+        console.log(data);
+      })
+    })
+  </script>
+</body>
+</html>

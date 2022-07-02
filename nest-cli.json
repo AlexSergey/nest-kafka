@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/app/src",
+  "monorepo": true,
+  "root": "apps/app",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/app/tsconfig.app.json"
+  },
+  "projects": {
+    "app": {
+      "type": "application",
+      "root": "apps/app",
+      "entryFile": "main",
+      "sourceRoot": "apps/app/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/app/tsconfig.app.json"
+      }
+    },
+    "fake-data": {
+      "type": "application",
+      "root": "apps/fake-data",
+      "entryFile": "main",
+      "sourceRoot": "apps/fake-data/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/fake-data/tsconfig.app.json"
+      }
+    },
+    "image-processing": {
+      "type": "application",
+      "root": "apps/image-processing",
+      "entryFile": "main",
+      "sourceRoot": "apps/image-processing/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/image-processing/tsconfig.app.json"
+      }
+    },
+    "events": {
+      "type": "library",
+      "root": "libs/events",
+      "entryFile": "index",
+      "sourceRoot": "libs/events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/events/tsconfig.lib.json"
+      }
+    },
+    "kafka-config": {
+      "type": "library",
+      "root": "libs/kafka-config",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka-config/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka-config/tsconfig.lib.json"
+      }
+    },
+    "serializer": {
+      "type": "library",
+      "root": "libs/serializer",
+      "entryFile": "index",
+      "sourceRoot": "libs/serializer/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/serializer/tsconfig.lib.json"
+      }
+    },
+    "deserializer": {
+      "type": "library",
+      "root": "libs/deserializer",
+      "entryFile": "index",
+      "sourceRoot": "libs/deserializer/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/deserializer/tsconfig.lib.json"
+      }
+    },
+    "schemas": {
+      "type": "library",
+      "root": "libs/schemas",
+      "entryFile": "index",
+      "sourceRoot": "libs/schemas/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/schemas/tsconfig.lib.json"
+      }
+    },
+    "contracts": {
+      "type": "library",
+      "root": "libs/contracts",
+      "entryFile": "index",
+      "sourceRoot": "libs/contracts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/contracts/tsconfig.lib.json"
+      }
+    },
+    "storage": {
+      "type": "application",
+      "root": "apps/storage",
+      "entryFile": "main",
+      "sourceRoot": "apps/storage/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/storage/tsconfig.app.json"
+      }
+    },
+    "kafka-errors": {
+      "type": "library",
+      "root": "libs/kafka-errors",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka-errors/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka-errors/tsconfig.lib.json"
+      }
+    },
+    "kafka-communicator": {
+      "type": "library",
+      "root": "libs/kafka-communicator",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka-communicator/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka-communicator/tsconfig.lib.json"
+      }
+    }
+  }
+}

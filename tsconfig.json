@@ -1,0 +1,71 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/events": [
+        "libs/events/src"
+      ],
+      "@app/events/*": [
+        "libs/events/src/*"
+      ],
+      "@app/kafka-config": [
+        "libs/kafka-config/src"
+      ],
+      "@app/kafka-config/*": [
+        "libs/kafka-config/src/*"
+      ],
+      "@app/serializer": [
+        "libs/serializer/src"
+      ],
+      "@app/serializer/*": [
+        "libs/serializer/src/*"
+      ],
+      "@app/deserializer": [
+        "libs/deserializer/src"
+      ],
+      "@app/deserializer/*": [
+        "libs/deserializer/src/*"
+      ],
+      "@app/schemas": [
+        "libs/schemas/src"
+      ],
+      "@app/schemas/*": [
+        "libs/schemas/src/*"
+      ],
+      "@app/contracts": [
+        "libs/contracts/src"
+      ],
+      "@app/contracts/*": [
+        "libs/contracts/src/*"
+      ],
+      "@app/kafka-errors": [
+        "libs/kafka-errors/src"
+      ],
+      "@app/kafka-errors/*": [
+        "libs/kafka-errors/src/*"
+      ],
+      "@app/kafka-communicator": [
+        "libs/kafka-communicator/src"
+      ],
+      "@app/kafka-communicator/*": [
+        "libs/kafka-communicator/src/*"
+      ]
+    }
+  }
+}
